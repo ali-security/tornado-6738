@@ -9,6 +9,7 @@ from tornado.httputil import (
 from tornado.escape import utf8, native_str
 from tornado.util import PY3
 from tornado.log import gen_log
+from tornado.testing import ExpectLog
 from tornado.test.util import unittest
 
 import copy
@@ -211,9 +212,7 @@ Foo
 --1234--'''.replace(b"\n", b"\r\n")
         args = {}
         files = {}
-        with self.assertRaises(
-            HTTPInputError, msg="multipart/form-data missing headers"
-        ):
+        with ExpectLog(gen_log, "multipart/form-data missing headers"):
             parse_multipart_form_data(b"1234", data, args, files)
         self.assertEqual(files, {})
 
@@ -226,7 +225,7 @@ Foo
 --1234--'''.replace(b"\n", b"\r\n")
         args = {}
         files = {}
-        with self.assertRaises(HTTPInputError, msg="Invalid multipart/form-data"):
+        with ExpectLog(gen_log, "Invalid multipart/form-data"):
             parse_multipart_form_data(b"1234", data, args, files)
         self.assertEqual(files, {})
 
@@ -238,7 +237,7 @@ Content-Disposition: form-data; name="files"; filename="ab.txt"
 Foo--1234--'''.replace(b"\n", b"\r\n")
         args = {}
         files = {}
-        with self.assertRaises(HTTPInputError, msg="Invalid multipart/form-data"):
+        with ExpectLog(gen_log, "Invalid multipart/form-data"):
             parse_multipart_form_data(b"1234", data, args, files)
         self.assertEqual(files, {})
 
@@ -251,9 +250,7 @@ Foo
 --1234--""".replace(b"\n", b"\r\n")
         args = {}
         files = {}
-        with self.assertRaises(
-            HTTPInputError, msg="multipart/form-data value missing name"
-        ):
+        with ExpectLog(gen_log, "multipart/form-data value missing name"):
             parse_multipart_form_data(b"1234", data, args, files)
         self.assertEqual(files, {})
 
