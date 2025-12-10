@@ -3,6 +3,8 @@
 *.so
 *.class
 *~
+travis.log
+0001-sp3-version.patch
 build/
 /dist/
 MANIFEST
