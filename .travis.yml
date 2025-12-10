@@ -1,15 +1,58 @@
 # https://travis-ci.org/tornadoweb/tornado
-dist: trusty
+dist: focal # Ubuntu 20.04
 
-# Use containers instead of full VMs for faster startup.
-sudo: false
-
-matrix:
-    fast_finish: true
 
 language: python
 # For a list of available versions, run
-#     aws s3 ls s3://travis-python-archives/binaries/ubuntu/14.04/x86_64/
+# https://docs.travis-ci.com/user/languages/python/
+
+jobs:
+  fast_finish: true
+  include:
+    # Old Python versions via pyenv (will be slower due to compilation)
+    - name: "Python 2.7"
+      language: python
+      python: 3.8  # placeholder
+      before_install:
+        - pyenv install 2.7.18
+        - pyenv global 2.7.18
+        - python --version
+      env: PYENV_VERSION=2.7.18
+    
+    - name: "Python 3.4"
+      language: python
+      python: 3.8
+      before_install:
+        - pyenv install 3.4.10
+        - pyenv global 3.4.10
+        - python --version
+      env: PYENV_VERSION=3.4.10
+    
+    - name: "Python 3.5"
+      language: python
+      python: 3.8
+      before_install:
+        - pyenv install 3.5.10
+        - pyenv global 3.5.10
+        - python --version
+      env: PYENV_VERSION=3.5.10
+    
+    # Modern Python versions (natively supported)
+    - python: "3.6"
+    - python: "3.7"
+    - python: "3.8"
+    - python: "3.9"
+    - python: "3.10"
+    - python: "3.11"
+    
+    # PyPy versions
+    - python: "pypy2.7-7.3.9"
+    - python: "pypy3.8-7.3.9"
+    
+    # Nightly build
+    - python: "nightly"
+      allow_failures: true
+
 python:
     - 2.7
     - pypy2.7-5.8.0
