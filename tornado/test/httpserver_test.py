@@ -371,13 +371,13 @@ class HTTPServerTest(AsyncHTTPTestCase):
         # fail.
         if str is bytes:
             return
-        with ExpectLog(gen_log, '.*Invalid x-www-form-urlencoded body'):
+        with ExpectLog(gen_log, 'Invalid x-www-form-urlencoded body'):
             response = self.fetch(
                 '/echo', method="POST",
                 headers={'Content-Type': 'application/x-www-form-urlencoded'},
                 body=b'\xe9')
-        # After the patch, malformed bodies raise HTTPInputError which becomes 400
-        self.assertEqual(400, response.code)
+        self.assertEqual(200, response.code)
+        self.assertEqual(b'{}', response.body)
 
 
 class HTTPServerRawTest(AsyncHTTPTestCase):
@@ -963,9 +963,9 @@ class GzipUnsupportedTest(GzipBaseTest, AsyncHTTPTestCase):
         # Gzip support is opt-in; without it the server fails to parse
         # the body (but parsing form bodies is currently just a log message,
         # not a fatal error).
-        with ExpectLog(gen_log, ".*Unsupported Content-Encoding"):
+        with ExpectLog(gen_log, "Unsupported Content-Encoding"):
             response = self.post_gzip('foo=bar')
-        self.assertEqual(response.code, 400)
+        self.assertEquals(json_decode(response.body), {})
 
 
 class StreamingChunkSizeTest(AsyncHTTPTestCase):
