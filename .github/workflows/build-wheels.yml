@@ -73,7 +73,7 @@ jobs:
         python -c "import os; files = os.listdir('dist'); print('Built:', files[0] if files else 'No files'); expected = f'tornado-5.1.1+sp3-cp${{ matrix.python-version }}'.replace('.', '') + 'm-' + f'cp${{ matrix.python-version }}'.replace('.', '') + 'm-${{ matrix.arch-name }}.whl'; print(f'Expected: {expected}')"
     
     - name: Upload wheels as artifacts
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: tornado-windows-wheels
         path: dist/*.whl
@@ -86,7 +86,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Download all artifacts
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: tornado-windows-wheels
         path: all-wheels
@@ -97,7 +97,7 @@ jobs:
         ls -lh all-wheels/
     
     - name: Re-upload all wheels together
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: tornado-5.1.1-3-windows-wheels
         path: all-wheels/*.whl
