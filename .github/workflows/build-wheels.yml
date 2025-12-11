@@ -70,7 +70,7 @@ jobs:
     
     - name: Verify wheel name
       run: |
-        python -c "import os; files = os.listdir('dist'); print('Built:', files[0] if files else 'No files'); expected = f'tornado-5.1.1+sp3-cp${{ matrix.python-version }}'.replace('.', '') + 'm-' + f'cp${{ matrix.python-version }}'.replace('.', '') + 'm-${{ matrix.arch-name }}.whl'; print(f'Expected: {expected}')"
+        python -c "import os; files = os.listdir('dist'); print('Built:', files[0] if files else 'No files'); pyver = '${{ matrix.python-version }}'.replace('.', ''); expected = 'tornado-5.1.1+sp3-cp' + pyver + 'm-cp' + pyver + 'm-${{ matrix.arch-name }}.whl'; print('Expected: ' + expected)"
     
     - name: Upload wheels as artifacts
       uses: actions/upload-artifact@v4
