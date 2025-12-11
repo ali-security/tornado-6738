@@ -75,7 +75,7 @@ jobs:
     - name: Upload wheels as artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: tornado-windows-wheels
+        name: tornado-windows-wheels-py${{ matrix.python-version }}-${{ matrix.arch-name }}
         path: dist/*.whl
         if-no-files-found: error
   
@@ -88,8 +88,9 @@ jobs:
     - name: Download all artifacts
       uses: actions/download-artifact@v4
       with:
-        name: tornado-windows-wheels
+        pattern: tornado-windows-wheels-*
         path: all-wheels
+        merge-multiple: true
     
     - name: List all wheels
       run: |
