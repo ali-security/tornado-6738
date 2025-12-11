@@ -4,7 +4,7 @@
 *.class
 *~
 travis.log
-0001-sp3-version.patch
+*.patch
 build/
 /dist/
 MANIFEST
